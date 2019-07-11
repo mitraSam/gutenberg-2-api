@@ -3,10 +3,10 @@ scalar DateTime
 
 type Book{
 title: String!
-id:ID!
 author: String!
 created: DateTime!
 wiki: String
+url:String
 
 }
 

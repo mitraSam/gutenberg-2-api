@@ -1,6 +1,5 @@
 const { GraphQLScalarType } = require("graphql");
-const fetch = require("node-fetch");
-const htmlparser = require("htmlparser2");
+const { streamParser, fetchWiki } = require("./lib");
 
 module.exports = {
   DateTime: new GraphQLScalarType({
@@ -23,13 +22,10 @@ module.exports = {
         ...args.input
       };
       const { createReadStream } = await args.input.book;
-      const stream = await new Promise((res, rej) => {
-        createReadStream().pipe(parse(res));
-      });
-      const wikiData = await fetch(
-        `https://en.wikipedia.org/api/rest_v1/page/summary/${args.input.title}`
-      ).then(r => r.json());
-      newBook.wiki = wikiData.extract;
+      const chapters = await streamParser(createReadStream);
+
+      const wikiData = await fetchWiki(args.input.title);
+      newBook.wiki = wikiData;
 
       const { insertedIds } = await db.collection("books").insertOne(newBook);
 
@@ -42,53 +38,3 @@ module.exports = {
     created: parent => parseInt(String(parent.id).substring(0, 8), 16) * 1000
   }
 };
-
-function parse(resolver) {
-  let isTitle = false;
-  let wordCount = 0;
-  let pageNr = 0;
-  let htmlString = "";
-  let book = [];
-  let currentChapter;
-  function insertPage() {
-    currentChapter.pages.push({ content: htmlString, pageNr: ++pageNr });
-    htmlString = "";
-    wordCount = 0;
-  }
-
-  return new htmlparser.Parser(
-    {
-      onopentag: function(name) {
-        if (name === "h2") {
-          if (htmlString) insertPage();
-          if (currentChapter) currentChapter.pagination.push(pageNr);
-          book.push({ pages: [], pagination: [pageNr + 1] });
-          currentChapter = book[book.length - 1];
-          isTitle = true;
-        }
-        htmlString += `<${name}>`;
-      },
-      ontext: function(text) {
-        wordCount += text.split(" ").length;
-        if (isTitle) currentChapter.title = text;
-        htmlString += text;
-      },
-      onclosetag: function(tagname) {
-        if (isTitle) isTitle = false;
-        htmlString += `</${tagname}>`;
-        if (wordCount > 400) {
-          insertPage();
-        }
-      },
-      onerror: function(err) {
-        console.log(err);
-      },
-      onend: function() {
-        if (htmlString) insertPage();
-        if (currentChapter) currentChapter.pagination.push(pageNr);
-        resolver(book);
-      }
-    },
-    { decodeEntities: true }
-  );
-}
