@@ -61,8 +61,8 @@ function parse(resolver) {
       onopentag: function(name) {
         if (name === "h2") {
           if (htmlString) insertPage();
-
-          book.push({ pages: [] });
+          if (currentChapter) currentChapter.pagination.push(pageNr);
+          book.push({ pages: [], pagination: [pageNr + 1] });
           currentChapter = book[book.length - 1];
           isTitle = true;
         }
@@ -85,7 +85,7 @@ function parse(resolver) {
       },
       onend: function() {
         if (htmlString) insertPage();
-        console.log(JSON.stringify(book));
+        if (currentChapter) currentChapter.pagination.push(pageNr);
         resolver(book);
       }
     },
