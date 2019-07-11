@@ -18,20 +18,23 @@ module.exports = {
   },
   Mutation: {
     async uploadBook(parent, args, { db }) {
-      const newBook = {
-        ...args.input
-      };
-      const { createReadStream } = await args.input.book;
+      const { title, author, license, file, url, source, credits } = args.input;
+      const { createReadStream } = await file;
       const chapters = await streamParser(createReadStream);
 
-      const wikiData = await fetchWiki(args.input.title);
-      newBook.wiki = wikiData;
+      const wikiData = await fetchWiki(title);
 
-      const { insertedIds } = await db.collection("books").insertOne(newBook);
-
-      newBook.id = insertedIds[0];
-
-      return newBook;
+      const book = {
+        title,
+        author,
+        license,
+        url,
+        source,
+        credits,
+        chapters,
+        wikiData
+      };
+      const { insertedIds } = await db.collection("books").insertOne(book);
     }
   },
   Book: {

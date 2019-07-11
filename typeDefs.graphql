@@ -7,9 +7,22 @@ author: String!
 created: DateTime!
 wiki: String
 url:String
-
+epigraph:String
+license: String
+source:String
+credits:[String]
+chapters: [Chapter]
+}
+type Chapter{
+    title: String
+    pages: [Page]
+    pagination:[Boolean]
 }
 
+type Page{
+    pageNr: Boolean
+    content: String
+}
 type User{
 githubLogin: String!
 name: String!
@@ -27,9 +40,13 @@ book(title:String!): Book
 totalBooks: Int!
 }
 input UploadBookInput{
-    title: String!
-    author: String!
-    book: Upload!
+       title:String
+        author:String
+        source:String
+        url:String
+        credits: [String],
+        license:String
+    file: Upload!
 }
 type Mutation{
     uploadBook(input:UploadBookInput!): Book
