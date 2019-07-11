@@ -1,0 +1,36 @@
+
+scalar DateTime
+
+type Book{
+title: String!
+id:ID!
+author: String!
+created: DateTime!
+wiki: String
+
+}
+
+type User{
+githubLogin: String!
+name: String!
+}
+
+type AuthPayLoad{
+    token: String!
+    user: User!
+}
+
+
+
+type Query{
+book(title:String!): Book
+totalBooks: Int!
+}
+input UploadBookInput{
+    title: String!
+    author: String!
+    book: Upload!
+}
+type Mutation{
+    uploadBook(input:UploadBookInput!): Book
+}
