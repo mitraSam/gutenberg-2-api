@@ -33,7 +33,12 @@ type AuthPayLoad{
     user: User!
 }
 
-
+type Notification{
+    message:String
+}
+type Subscription{
+    uploadingBook:Notification
+}
 
 type Query{
 book(title:String!): Book
@@ -42,11 +47,11 @@ totalBooks: Int!
 input UploadBookInput{
        title:String
         author:String
+            file: Upload!
         source:String
         url:String
-        credits: [String],
+        credits: [String]
         license:String
-    file: Upload!
 }
 type Mutation{
     uploadBook(input:UploadBookInput!): Book
