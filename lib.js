@@ -6,6 +6,7 @@ function htmlParser(res, rej) {
   let pageNr = 0;
   let htmlString = "";
   let book = [];
+  let titles = [];
   let currentChapter;
   function insertPage() {
     currentChapter.pages.push({ content: htmlString, pageNr: ++pageNr });
@@ -27,7 +28,10 @@ function htmlParser(res, rej) {
       },
       ontext: function(text) {
         wordCount += text.split(" ").length;
-        if (isTitle) currentChapter.title = text;
+        if (isTitle) {
+          currentChapter.title = text;
+          titles.push(text);
+        }
         htmlString += text;
       },
       onclosetag: function(tagname) {
@@ -43,6 +47,7 @@ function htmlParser(res, rej) {
       onend: function() {
         if (htmlString) insertPage();
         if (currentChapter) currentChapter.pagination.push(pageNr);
+        book.titles = titles;
         res(book);
       }
     },
@@ -53,6 +58,7 @@ const fetchWiki = async param => {
   const data = await fetch(
     `https://en.wikipedia.org/api/rest_v1/page/summary/${param}`
   );
+  console.log(data);
   const dataToJson = await data.json();
   return dataToJson.extract;
 };
