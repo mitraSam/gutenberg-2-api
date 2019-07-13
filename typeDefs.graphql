@@ -66,4 +66,5 @@ username: String!
 type Mutation{
     uploadBook(input:UploadBookInput!): Book
     registerUser(input:RegisterUserInput!):User
+    loginUser(username:String! password:String): User
 }

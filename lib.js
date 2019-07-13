@@ -1,5 +1,7 @@
 const htmlparser = require("htmlparser2");
 const fetch = require("node-fetch");
+const { verify, sign } = require("jsonwebtoken");
+
 function htmlParser(res, rej) {
   let isTitle = false;
   let wordCount = 0;
@@ -54,11 +56,25 @@ function htmlParser(res, rej) {
     { decodeEntities: true }
   );
 }
+function generateToken(username) {
+  const secret = process.env.JWT_SECRET;
+  return sign({ data: username }, secret, { expiresIn: 1 * 60 });
+}
+function verifyToken(token) {
+  const secret = process.env.JWT_SECRET;
+  try {
+    var decoded = verify(token, secret);
+  } catch (err) {
+    return null;
+    // err
+  }
+  return decoded;
+}
+
 const fetchWiki = async param => {
   const data = await fetch(
     `https://en.wikipedia.org/api/rest_v1/page/summary/${param}`
   );
-  console.log(data);
   const dataToJson = await data.json();
   return dataToJson.extract;
 };
@@ -67,5 +83,7 @@ module.exports = {
     new Promise((res, rej) => stream().pipe(htmlParser(res, rej))).catch(
       console.log
     ),
-  fetchWiki
+  fetchWiki,
+  generateToken,
+  verifyToken
 };

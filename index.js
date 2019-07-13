@@ -7,6 +7,8 @@ const typeDefs = readFileSync("./typeDefs.graphql", "UTF-8");
 const resolvers = require("./resolvers");
 const { createServer } = require("http");
 const { MongoClient } = require("mongodb");
+const { verifyToken } = require("./lib");
+
 require("dotenv").config();
 const pubsub = new PubSub();
 
@@ -17,7 +19,13 @@ async function start() {
   const client = await MongoClient.connect(MONGO_DB, { useNewUrlParser: true });
   const db = client.db();
 
-  const context = { db, pubsub };
+  const context = async ({ req, connection }) => {
+    const token = req
+      ? req.headers.authorization
+      : connection.context.Authorization;
+    const currentUser = verifyToken(token);
+    return { db, currentUser, pubsub };
+  };
 
   const server = new ApolloServer({ typeDefs, resolvers, context });
   server.applyMiddleware({ app });

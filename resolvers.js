@@ -1,6 +1,6 @@
 const { GraphQLScalarType } = require("graphql");
-const { streamParser, fetchWiki } = require("./lib");
-
+const { streamParser, fetchWiki, generateToken } = require("./lib");
+const { hash, compareSync } = require("bcrypt");
 module.exports = {
   DateTime: new GraphQLScalarType({
     name: "DateTime",
@@ -31,7 +31,6 @@ module.exports = {
     },
 
     async bookChapter(parent, args, { db }) {
-      console.log("running");
       const bookChapter = await db.collection("books").findOne(
         { title: args.title },
         {
@@ -95,6 +94,27 @@ module.exports = {
     },
     async registerUser(parent, args, { db }) {
       const user = { ...args.input };
+      user.password = await hash(user.password, 10);
+      const {
+        ops: [newUser]
+      } = await db.collection("users").insertOne(user);
+      return { username: newUser.username };
+    },
+    async loginUser(parent, args, { db }) {
+      try {
+        var user = await db
+          .collection("users")
+          .findOne({ username: args.username });
+        console.log(user);
+        const validPwd = compareSync(args.password, user.password);
+        console.log(validPwd);
+        if (!user || !validPwd) throw "pwd || username invalid";
+      } catch (e) {
+        throw "pwd || username invalid";
+      }
+      const token = generateToken(user.username);
+      console.log(token);
+      return user;
     }
   },
 
