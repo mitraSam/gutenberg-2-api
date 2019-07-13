@@ -98,7 +98,8 @@ module.exports = {
       const {
         ops: [newUser]
       } = await db.collection("users").insertOne(user);
-      return { username: newUser.username };
+
+      return generateToken(newUser.username);
     },
     async loginUser(parent, args, { db }) {
       try {
@@ -112,9 +113,7 @@ module.exports = {
       } catch (e) {
         throw "pwd || username invalid";
       }
-      const token = generateToken(user.username);
-      console.log(token);
-      return user;
+      return generateToken(user.username);
     }
   },
 

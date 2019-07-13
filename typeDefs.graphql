@@ -48,6 +48,7 @@ bookDetails(title:String!):Book
 bookChapter(title:String! chapterTitle:String!): Book
     recentBooks:[Book]
 }
+
 input UploadBookInput{
        title:String
         author:String
@@ -65,6 +66,6 @@ username: String!
 }
 type Mutation{
     uploadBook(input:UploadBookInput!): Book
-    registerUser(input:RegisterUserInput!):User
-    loginUser(username:String! password:String): User
+    registerUser(input:RegisterUserInput!):String
+    loginUser(username:String! password:String): String
 }

@@ -58,7 +58,7 @@ function htmlParser(res, rej) {
 }
 function generateToken(username) {
   const secret = process.env.JWT_SECRET;
-  return sign({ data: username }, secret, { expiresIn: 1 * 60 });
+  return sign({ data: username }, secret, { expiresIn: 10 * 60 });
 }
 function verifyToken(token) {
   const secret = process.env.JWT_SECRET;
