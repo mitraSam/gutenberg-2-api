@@ -50,16 +50,13 @@ module.exports = {
       return bookChapter;
     },
     async search(parent, args, { db }) {
-      let message = `results for ${args.param}:`;
-      const foundItems = await db
+      return await db
         .collection("books")
         .find(
           { $text: { $search: args.param } },
           { projection: { title: 1, author: 1 } }
         )
         .toArray();
-      if (!foundItems.length) message = `nothing found for ${args.param} ...`;
-      return { foundItems, message };
     }
   },
   Mutation: {
