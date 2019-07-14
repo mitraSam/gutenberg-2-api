@@ -48,6 +48,18 @@ module.exports = {
         }
       );
       return bookChapter;
+    },
+    async search(parent, args, { db }) {
+      let message = `results for ${args.param}:`;
+      const foundItems = await db
+        .collection("books")
+        .find(
+          { $text: { $search: args.param } },
+          { projection: { title: 1, author: 1 } }
+        )
+        .toArray();
+      if (!foundItems.length) message = `nothing found for ${args.param} ...`;
+      return { foundItems, message };
     }
   },
   Mutation: {
@@ -106,9 +118,7 @@ module.exports = {
         var user = await db
           .collection("users")
           .findOne({ username: args.username });
-        console.log(user);
         const validPwd = compareSync(args.password, user.password);
-        console.log(validPwd);
         if (!user || !validPwd) throw "pwd || username invalid";
       } catch (e) {
         throw "pwd || username invalid";

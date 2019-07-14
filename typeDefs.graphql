@@ -40,13 +40,17 @@ type Notification{
 type Subscription{
     uploadingBook:Notification
 }
-
+type SearchLoad{
+    message:String
+    foundItems: [Book]
+}
 type Query{
 book(title:String!): Book
 totalBooks: Int!
 bookDetails(title:String!):Book
 bookChapter(title:String! chapterTitle:String!): Book
     recentBooks:[Book]
+    search(param:String!):SearchLoad
 }
 
 input UploadBookInput{
