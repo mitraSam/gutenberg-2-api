@@ -19,14 +19,18 @@ module.exports = {
       return await db
         .collection("books")
         .find({}, { projection: { title: 1, author: 1 } })
-        .sort({ _id: -1 })
+        .sort({ _id: 1 })
         .limit(4)
         .toArray();
     },
     async bookDetails(parent, args, { db }) {
+      console.log("running");
       const bookDetails = await db
         .collection("books")
-        .findOne({ title: args.title }, { projection: { chapters: 0 } });
+        .findOne(
+          { title: new RegExp(args.title, "i") },
+          { projection: { chapters: 0 } }
+        );
       return bookDetails;
     },
 
