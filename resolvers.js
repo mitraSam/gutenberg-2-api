@@ -26,11 +26,8 @@ module.exports = {
     async bookDetails(parent, args, { db }) {
       console.log("running");
       const bookDetails = await db
-        .collection("books")
-        .findOne(
-          { title: new RegExp(args.title, "i") },
-          { projection: { chapters: 0 } }
-        );
+        .collection("details")
+        .findOne({ title: new RegExp(args.title, "i") });
       return bookDetails;
     },
 
@@ -78,32 +75,60 @@ module.exports = {
 
       const { createReadStream } = await file;
 
-      pubsub.publish("uploading-book", {
-        uploadingBook: { message: "parsing book" }
-      });
-      const chapters = await streamParser(createReadStream);
-      const chapterTitles = chapters.titles;
       const wikiData = await fetchWiki(title.toLowerCase());
-      const book = {
+      var details = {
         title,
         author,
         license,
         url,
         source,
         credits,
-        chapters,
+
         wikiData,
-        epigraph,
-        chapterTitles
+        epigraph
       };
+
+      pubsub.publish("uploading-book", {
+        uploadingBook: { message: "parsing book" }
+      });
+
+      /* parse HTML file to array of chapters */
+
+      const parsedChapters = await streamParser(createReadStream);
+
+      details.chapterTitles = parsedChapters.titles;
       pubsub.publish("uploading-book", {
         uploadingBook: { message: "inserting book into db" }
       });
 
-      const { insertedIds } = await db.collection("books").insertOne(book);
+      /* inserting book details into DB */
+
+      const { insertedId } = await db.collection("details").insertOne(details);
+
+      /* add book details ID to each chapter  */
+
+      const chaptersWithBookId = parsedChapters.map(ch => {
+        ch.bookId = insertedId;
+        return ch;
+      });
+
+      /* insert book chapters  into DB */
+
+      const { insertedIds } = await db
+        .collection("chapters")
+        .insertMany(chaptersWithBookId);
+
+      /* update book details with chapter IDs  */
+
+      await db
+        .collection("details")
+        .updateOne({ _id: insertedId }, { $set: { chapters: insertedIds } });
+
       pubsub.publish("uploading-book", {
         uploadingBook: { message: "book created" }
       });
+
+      return details;
     },
     async registerUser(parent, args, { db }) {
       const user = { ...args.input };

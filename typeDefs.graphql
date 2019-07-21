@@ -15,7 +15,7 @@ chapters: [Chapter]
     chapterTitles: [String]
 }
 type Chapter{
-    title: String
+    title: String!
     pages: [Page!]
     pagination:[Int!]
 }
@@ -65,8 +65,21 @@ email: String!
 username: String!
     password: String!
 }
+type Details{
+title: String!
+author: String!
+created: DateTime!
+wikiData: String
+source:String!
+epigraph:String
+license: String!
+credits:[String]
+chapters: [ID]
+chapterTitles: [String!]
+
+}
 type Mutation{
-    uploadBook(input:UploadBookInput!): Book
+    uploadBook(input:UploadBookInput!): Details!
     registerUser(input:RegisterUserInput!):String
     loginUser(username:String! password:String): String
 }
