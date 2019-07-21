@@ -97,6 +97,7 @@ module.exports = {
       const parsedChapters = await streamParser(createReadStream);
 
       details.chapterTitles = parsedChapters.titles;
+      details.pagesNr = parsedChapters.pagesNr;
       pubsub.publish("uploading-book", {
         uploadingBook: { message: "inserting book into db" }
       });

@@ -10,10 +10,12 @@ function htmlParser(res, rej) {
   let book = [];
   let titles = [];
   let currentChapter;
+  let totalPagesNr = 0;
   function insertPage() {
     currentChapter.pages.push({ content: htmlString, pageNr: ++pageNr });
     htmlString = "";
     wordCount = 0;
+    totalPagesNr++;
   }
 
   return new htmlparser.Parser(
@@ -50,6 +52,7 @@ function htmlParser(res, rej) {
         if (htmlString) insertPage();
         if (currentChapter) currentChapter.pagination.push(pageNr);
         book.titles = titles;
+        book.pagesNr = totalPagesNr;
         res(book);
       }
     },
