@@ -32,23 +32,18 @@ module.exports = {
     },
 
     async bookChapter(parent, args, { db }) {
-      const bookChapter = await db.collection("books").findOne(
-        { title: args.title },
-        {
-          projection: {
-            title: 1,
-            author: 1,
-            credits: 1,
-            url: 1,
-            source: 1,
-            wikiData: 1,
-            license: 1,
-            chapterTitles: 1,
-            chapters: { $elemMatch: { title: args.chapterTitle } }
-          }
-        }
-      );
-      return bookChapter;
+      /* query the book chapters ids */
+
+      const { chapters } = await db
+        .collection("details")
+        .findOne(
+          { title: new RegExp(args.title, "i") },
+          { projection: { chapters: 1 } }
+        );
+
+      return await db
+        .collection("chapters")
+        .findOne({ _id: chapters[args.chapterNr] });
     },
     async search(parent, args, { db }) {
       return await db
@@ -67,7 +62,6 @@ module.exports = {
         author,
         license,
         file,
-        url,
         source,
         credits,
         epigraph
@@ -80,10 +74,8 @@ module.exports = {
         title,
         author,
         license,
-        url,
         source,
         credits,
-
         wikiData,
         epigraph
       };

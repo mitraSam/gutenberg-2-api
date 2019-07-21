@@ -44,8 +44,8 @@ type Subscription{
 type Query{
 book(title:String!): Book
 totalBooks: Int!
-bookDetails(title:String!):Book
-bookChapter(title:String! chapterTitle:String!): Book
+bookDetails(title:String!):Details
+bookChapter(title:String! chapterNr:Int!): Chapter
     recentBooks:[Book]
     search(param:String!):[Book]
 }
@@ -75,6 +75,7 @@ epigraph:String
 license: String!
 credits:[String]
 chapters: [ID]
+ pagesNr: Int!
 chapterTitles: [String!]
 
 }
