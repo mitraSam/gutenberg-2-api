@@ -11,6 +11,7 @@ function htmlParser(res, rej) {
   let titles = [];
   let currentChapter;
   let totalPagesNr = 0;
+  let tags = [];
   function insertPage() {
     currentChapter.pages.push({ content: htmlString, pageNr: ++pageNr });
     htmlString = "";
@@ -21,6 +22,7 @@ function htmlParser(res, rej) {
   return new htmlparser.Parser(
     {
       onopentag: function(name) {
+        tags.push(name);
         if (name === "h2") {
           if (htmlString) insertPage();
           if (currentChapter) currentChapter.pagination.push(pageNr);
@@ -39,6 +41,8 @@ function htmlParser(res, rej) {
         htmlString += text;
       },
       onclosetag: function(tagname) {
+        tags.pop();
+        if (tags.length) return;
         if (isTitle) isTitle = false;
         htmlString += `</${tagname}>`;
         if (wordCount > 400) {

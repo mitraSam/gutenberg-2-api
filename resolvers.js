@@ -33,7 +33,6 @@ module.exports = {
 
     async bookChapter(parent, args, { db }) {
       /* query the book chapters ids */
-
       const { chapters } = await db
         .collection("details")
         .findOne(
@@ -87,8 +86,10 @@ module.exports = {
       /* parse HTML file to array of chapters */
 
       const parsedChapters = await streamParser(createReadStream);
-
-      details.chapterTitles = parsedChapters.titles;
+      details.tableOfContents = parsedChapters.map(({ title, pagination }) => ({
+        title,
+        pagination
+      }));
       details.pagesNr = parsedChapters.pagesNr;
       pubsub.publish("uploading-book", {
         uploadingBook: { message: "inserting book into db" }

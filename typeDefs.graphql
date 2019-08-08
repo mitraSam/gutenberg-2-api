@@ -12,7 +12,12 @@ license: String
 source:String
 credits:[String]
 chapters: [Chapter]
-    chapterTitles: [String]
+tableOfContents: [ContentItem]
+}
+
+type ContentItem{
+    pagination:[Int]
+    title:String
 }
 type Chapter{
     title: String!
@@ -76,7 +81,7 @@ license: String!
 credits:[String]
 chapters: [ID]
  pagesNr: Int!
-chapterTitles: [String!]
+tableOfContents: [ContentItem]
 
 }
 type Mutation{
