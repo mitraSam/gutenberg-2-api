@@ -23,6 +23,21 @@ module.exports = {
         .limit(4)
         .toArray();
     },
+    async readBooks(parent, args, { db }) {
+      const { readBooks } = await db
+        .collection("users")
+        .findOne({ username: args.username });
+      if (readBooks) {
+        const bookmarks = Object.keys(readBooks).map(title => ({
+          title,
+          chapterNr: readBooks[title][0],
+          pageNr: readBooks[title][1]
+        }));
+        console.log(bookmarks);
+        return bookmarks;
+      }
+      return null;
+    },
     async bookDetails(parent, args, { db }) {
       console.log("running");
       const bookDetails = await db
@@ -125,15 +140,25 @@ module.exports = {
       return details;
     },
     async registerUser(parent, args, { db }) {
-      const user = { ...args.input };
-      user.password = await hash(user.password, 10);
+      const user = { password: args.password, username: args.username };
+      user.password = await hash(args.password, 10);
+
       const {
         ops: [newUser]
       } = await db.collection("users").insertOne(user);
+      console.log(newUser);
 
       return generateToken(newUser.username);
     },
-    async loginUser(parent, args, { db }) {
+    bookmarkPage(parent, args, { db }) {
+      const { pageNr, chapterNr, title } = args;
+      const readBook = `readBooks.${title}`;
+      db.collection("users").updateOne(
+        { username: args.username },
+        { $set: { [readBook]: [chapterNr, pageNr] } }
+      );
+    },
+    async loginUser(parent, args, { db, currentUser, pubsub, errorName }) {
       try {
         var user = await db
           .collection("users")
@@ -141,7 +166,7 @@ module.exports = {
         const validPwd = compareSync(args.password, user.password);
         if (!user || !validPwd) throw "pwd || username invalid";
       } catch (e) {
-        throw "pwd || username invalid";
+        throw new Error(errorName.INVALID_CREDENTIALS);
       }
       return generateToken(user.username);
     }

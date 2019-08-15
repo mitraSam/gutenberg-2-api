@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="4188e02d-6d32-4a91-ba88-25f47083345c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resolvers.js" beforeDir="false" afterPath="$PROJECT_DIR$/resolvers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/typeDefs.graphql" beforeDir="false" afterPath="$PROJECT_DIR$/typeDefs.graphql" afterDir="false" />
     </list>
@@ -15,20 +18,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/typeDefs.graphql">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resolvers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="185">
+              <caret line="32" column="11" lean-forward="true" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resolvers.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="30" column="25" lean-forward="true" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+            <state relative-caret-position="208">
+              <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/typeDefs.graphql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="305">
+              <caret line="53" column="11" lean-forward="true" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -36,8 +48,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
+            <state relative-caret-position="864">
+              <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -61,8 +73,6 @@
       <find>console.</find>
       <find>v</find>
       <find>valid</find>
-      <find>RegisterUserInput</find>
-      <find>console</find>
       <find>parser</find>
       <find>inserted</find>
       <find>insertedIds</find>
@@ -70,8 +80,17 @@
       <find>proje</find>
       <find>Book</find>
       <find>chaptertit</find>
-      <find>tableOfContens</find>
       <find>tableOfContents</find>
+      <find>console</find>
+      <find>tableOfContens</find>
+      <find>console.l</find>
+      <find>login</find>
+      <find>RegisterUserInput</find>
+      <find>reg</find>
+      <find>email</find>
+      <find>inva</find>
+      <find>try</find>
+      <find>register</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -86,17 +105,17 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/models.js" />
         <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/lib.js" />
+        <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/typeDefs.graphql" />
         <option value="$PROJECT_DIR$/resolvers.js" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="152" />
-    <option name="width" value="1793" />
-    <option name="height" value="1013" />
+    <option name="x" value="144" />
+    <option name="width" value="1800" />
+    <option name="height" value="1020" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -104,6 +123,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -115,7 +135,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -180,18 +199,22 @@
       <workItem from="1564318257237" duration="1787000" />
       <workItem from="1564557521779" duration="592000" />
       <workItem from="1564645440614" duration="46000" />
-      <workItem from="1565251930514" duration="2527000" />
+      <workItem from="1565251930514" duration="3286000" />
+      <workItem from="1565560025377" duration="107000" />
+      <workItem from="1565596904755" duration="2853000" />
+      <workItem from="1565769972414" duration="4661000" />
+      <workItem from="1565856210311" duration="1385000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="102895000" />
+    <option name="totallyTimeSpent" value="112660000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1618" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31578946" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3331194" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -250,29 +273,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="21" column="20" selection-start-line="21" selection-start-column="20" selection-end-line="21" selection-end-column="20" />
+        <state relative-caret-position="208">
+          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="27" column="35" selection-start-line="27" selection-start-column="35" selection-end-line="27" selection-end-column="35" />
+        <state relative-caret-position="864">
+          <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/typeDefs.graphql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="305">
+          <caret line="53" column="11" lean-forward="true" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resolvers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="30" column="25" lean-forward="true" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
+        <state relative-caret-position="185">
+          <caret line="32" column="11" lean-forward="true" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
         </state>
       </provider>
     </entry>

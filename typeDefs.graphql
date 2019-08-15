@@ -30,7 +30,6 @@ type Page{
     content: String!
 }
 type User{
-email: String!
 username: String!
 }
 
@@ -46,9 +45,16 @@ type Subscription{
     uploadingBook:Notification
 }
 
+type Bookmark{
+    title:String!
+    chapterNr:Int!
+    pageNr:Int!
+}
+
 type Query{
 book(title:String!): Book
 totalBooks: Int!
+    readBooks(username:String!):[Bookmark]
 bookDetails(title:String!):Details
 bookChapter(title:String! chapterNr:Int!): Chapter
     recentBooks:[Book]
@@ -66,7 +72,6 @@ input UploadBookInput{
     epigraph:String
 }
 input RegisterUserInput{
-email: String!
 username: String!
     password: String!
 }
@@ -86,6 +91,7 @@ tableOfContents: [ContentItem]
 }
 type Mutation{
     uploadBook(input:UploadBookInput!): Details!
-    registerUser(input:RegisterUserInput!):String
+    registerUser(username:String! password:String):String
     loginUser(username:String! password:String): String
+    bookmarkPage(username: String! title:String! chapterNr:Int! pageNr: Int!):String
 }

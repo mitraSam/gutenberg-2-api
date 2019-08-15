@@ -8,6 +8,16 @@ const resolvers = require("./resolvers");
 const { createServer } = require("http");
 const { MongoClient } = require("mongodb");
 const { verifyToken } = require("./lib");
+const FormatError = require("easygraphql-format-error");
+
+const formatError = new FormatError([
+  {
+    name: "INVALID_CREDENTIALS",
+    message: "username || pwd is invalid",
+    statusCode: 400
+  }
+]);
+const errorName = formatError.errorName;
 
 require("dotenv").config();
 const pubsub = new PubSub();
@@ -24,10 +34,18 @@ async function start() {
       ? req.headers.authorization
       : connection.context.Authorization;
     const currentUser = verifyToken(token);
-    return { db, currentUser, pubsub };
+
+    return { db, currentUser, pubsub, errorName };
   };
 
-  const server = new ApolloServer({ typeDefs, resolvers, context });
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context,
+    formatError: err => {
+      return formatError.getError(err);
+    }
+  });
   server.applyMiddleware({ app });
 
   app.get("/", (req, res) => res.end("Welcome to the PhotoShare API"));

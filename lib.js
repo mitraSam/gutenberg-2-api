@@ -42,10 +42,9 @@ function htmlParser(res, rej) {
       },
       onclosetag: function(tagname) {
         tags.pop();
-        if (tags.length) return;
         if (isTitle) isTitle = false;
         htmlString += `</${tagname}>`;
-        if (wordCount > 400) {
+        if (!tags.length && wordCount > 400) {
           insertPage();
         }
       },
@@ -65,7 +64,7 @@ function htmlParser(res, rej) {
 }
 function generateToken(username) {
   const secret = process.env.JWT_SECRET;
-  return sign({ data: username }, secret, { expiresIn: 10 * 60 });
+  return sign({ data: username }, secret, { expiresIn: 1000 * 60 });
 }
 function verifyToken(token) {
   const secret = process.env.JWT_SECRET;
