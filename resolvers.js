@@ -30,10 +30,10 @@ module.exports = {
       if (readBooks) {
         const bookmarks = Object.keys(readBooks).map(title => ({
           title,
+          author: readBooks[title][2],
           chapterNr: readBooks[title][0],
           pageNr: readBooks[title][1]
         }));
-        console.log(bookmarks);
         return bookmarks;
       }
       return null;
@@ -61,7 +61,7 @@ module.exports = {
     },
     async search(parent, args, { db }) {
       return await db
-        .collection("books")
+        .collection("details")
         .find(
           { $text: { $search: args.param } },
           { projection: { title: 1, author: 1 } }
@@ -146,16 +146,15 @@ module.exports = {
       const {
         ops: [newUser]
       } = await db.collection("users").insertOne(user);
-      console.log(newUser);
 
       return generateToken(newUser.username);
     },
     bookmarkPage(parent, args, { db }) {
-      const { pageNr, chapterNr, title } = args;
+      const { pageNr, chapterNr, title, author } = args;
       const readBook = `readBooks.${title}`;
       db.collection("users").updateOne(
         { username: args.username },
-        { $set: { [readBook]: [chapterNr, pageNr] } }
+        { $set: { [readBook]: [chapterNr, pageNr, author] } }
       );
     },
     async loginUser(parent, args, { db, currentUser, pubsub, errorName }) {

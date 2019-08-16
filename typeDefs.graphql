@@ -47,6 +47,7 @@ type Subscription{
 
 type Bookmark{
     title:String!
+    author:String!
     chapterNr:Int!
     pageNr:Int!
 }
@@ -93,5 +94,5 @@ type Mutation{
     uploadBook(input:UploadBookInput!): Details!
     registerUser(username:String! password:String):String
     loginUser(username:String! password:String): String
-    bookmarkPage(username: String! title:String! chapterNr:Int! pageNr: Int!):String
+    bookmarkPage(username: String! title:String!  author:String! chapterNr:Int! pageNr: Int!):String
 }
