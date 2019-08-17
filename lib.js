@@ -19,12 +19,22 @@ function htmlParser(res, rej) {
     totalPagesNr++;
   }
 
+  function amendPage() {
+    const prevPage = currentChapter.pages[currentChapter.pages.length - 1];
+    prevPage.content.concat(htmlString);
+    htmlString = "";
+    wordCount = 0;
+  }
+
   return new htmlparser.Parser(
     {
       onopentag: function(name) {
         tags.push(name);
         if (name === "h2") {
-          if (htmlString) insertPage();
+          if (htmlString) {
+            if (wordCount > 30) insertPage();
+            else amendPage();
+          }
           if (currentChapter) currentChapter.pagination.push(pageNr);
           book.push({ pages: [], pagination: [pageNr + 1] });
           currentChapter = book[book.length - 1];

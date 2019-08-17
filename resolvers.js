@@ -17,7 +17,7 @@ module.exports = {
       db.collection("books").estimatedDocumentCount(),
     async recentBooks(parent, args, { db }) {
       return await db
-        .collection("books")
+        .collection("details")
         .find({}, { projection: { title: 1, author: 1 } })
         .sort({ _id: 1 })
         .limit(4)
