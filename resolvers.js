@@ -11,10 +11,6 @@ module.exports = {
   }),
 
   Query: {
-    book: (parent, args, { db }) =>
-      db.collection("books").findOne({ title: args.title }),
-    totalBooks: (parent, args, { db }) =>
-      db.collection("books").estimatedDocumentCount(),
     async recentBooks(parent, args, { db }) {
       return await db
         .collection("details")
@@ -28,22 +24,19 @@ module.exports = {
         .collection("users")
         .findOne({ username: args.username });
       if (readBooks) {
-        const bookmarks = Object.keys(readBooks).map(title => ({
+        return Object.keys(readBooks).map(title => ({
           title,
           author: readBooks[title][2],
           chapterNr: readBooks[title][0],
           pageNr: readBooks[title][1]
         }));
-        return bookmarks;
       }
       return null;
     },
     async bookDetails(parent, args, { db }) {
-      console.log("running");
-      const bookDetails = await db
+      return await db
         .collection("details")
         .findOne({ title: new RegExp(args.title, "i") });
-      return bookDetails;
     },
 
     async bookChapter(parent, args, { db }) {
@@ -60,13 +53,17 @@ module.exports = {
         .findOne({ _id: chapters[args.chapterNr] });
     },
     async search(parent, args, { db }) {
-      return await db
-        .collection("details")
-        .find(
-          { $text: { $search: args.param } },
-          { projection: { title: 1, author: 1 } }
-        )
-        .toArray();
+      try {
+        return await db
+          .collection("details")
+          .find(
+            { $text: { $search: args.param } },
+            { projection: { title: 1, author: 1 } }
+          )
+          .toArray();
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   Mutation: {
