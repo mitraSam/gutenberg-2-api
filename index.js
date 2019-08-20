@@ -9,7 +9,7 @@ const { createServer } = require("http");
 const { MongoClient } = require("mongodb");
 const { verifyToken } = require("./lib");
 const FormatError = require("easygraphql-format-error");
-
+const cors = require("cors");
 const formatError = new FormatError([
   {
     name: "INVALID_CREDENTIALS",
@@ -24,6 +24,7 @@ const pubsub = new PubSub();
 
 async function start() {
   const app = express();
+  app.use(cors());
   const MONGO_DB = process.env.DB_HOST;
 
   const client = await MongoClient.connect(MONGO_DB, { useNewUrlParser: true });
@@ -48,7 +49,7 @@ async function start() {
   });
   server.applyMiddleware({ app });
 
-  app.get("/", (req, res) => res.end("Welcome to the PhotoShare API"));
+  app.get("/", (req, res) => res.end("Welcome to the  'gutenberg's den'  API"));
 
   app.get("/playground", expressPlayground({ endpoint: "/graphql" }));
 
